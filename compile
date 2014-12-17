@@ -1,0 +1,1 @@
+gcc -o dopplerShift dopplerShift.c readfits.c -L../cfitsio/lib -I../cfitsio/include/ -lcfitsio  

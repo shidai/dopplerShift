@@ -1,0 +1,5 @@
+Correct the doppler shift caused by the motion of the Earth around the Sun
+
+To compile: sh run.sh
+
+Usage: dopplerShift -f freqSSB -d dname 
