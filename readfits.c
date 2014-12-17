@@ -833,7 +833,7 @@ int readFreqSSB (char *name, double *freqSSB)
 	i = 0;
 	while (fscanf(fp, "%lf", &temp) == 1)
 	{
-		freqSSB[i] = temp;
+		freqSSB[i] = temp/1000000.0;
 		i++;
 	}
 
