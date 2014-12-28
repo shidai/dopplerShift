@@ -771,14 +771,17 @@ int correctFreqSSB (double *freqSSB, char *name, int subint, int nchan)
   int	felem = 1;
   int nelem = nchan;
   int null = 0;
+  int	anynull = 0;
 
 	frow = subint;
-	printf ("subint %d\n", frow);
-	printf ("nchan %d\n", nelem);
+	double freq0[nchan];
+  fits_read_col(fptr, TDOUBLE, colnum, frow, felem, nelem, &null, freq0, &anynull, &status);           // read the column
+	//printf ("subint %d\n", frow);
+	//printf ("nchan %d\n", nelem);
 	int i;
 	for (i = 0; i < nchan; i++)
 	{
-		printf ("freqSSB %lf\n", freqSSB[i]);
+		printf ("freq0: %lf freqSSB: %lf\n", freq0[i], freqSSB[i]);
 	}
 
   fits_write_col(fptr, TDOUBLE, colnum, frow, felem, nelem, freqSSB, &status);           // read the column
@@ -793,7 +796,8 @@ int correctFreqSSB (double *freqSSB, char *name, int subint, int nchan)
 	return 0;
 }
 
-int readNchn0 (char *name, int *nchn)
+/*
+int readFreqSSB (char *name, double *freqSSB)
 {
 	FILE *fp;
 	int i;
@@ -810,13 +814,23 @@ int readNchn0 (char *name, int *nchn)
 	{
 		i++;
 	}
-	(*nchn) = i;
+
+	if (i == 1)
+	{
+		(*freqSSB) = (temp/1000000.0)/1369.0;  // MHz
+		//(*freqSSB) = (temp/1000000.0)/1369.0;  // MHz
+	}
+	else 
+	{
+		printf ("Multiple freqSSB correction, check!\n");
+	}
 
 	if (fclose (fp) != 0)
 		fprintf (stderr, "Error closing\n");
 
 	return 0;
 }
+*/
 
 int readFreqSSB (char *name, double *freqSSB)
 {
@@ -836,6 +850,32 @@ int readFreqSSB (char *name, double *freqSSB)
 		freqSSB[i] = temp/1000000.0;
 		i++;
 	}
+
+	if (fclose (fp) != 0)
+		fprintf (stderr, "Error closing\n");
+
+	return 0;
+}
+
+int readNchn0 (char *name, int *nchn0)
+{
+	FILE *fp;
+	int i;
+	double temp;
+
+	if ((fp = fopen(name, "r")) == NULL)
+	{
+		fprintf (stdout, "Can't open file\n");
+		exit(1);
+	}
+
+	i = 0;
+	while (fscanf(fp, "%lf", &temp) == 1)
+	{
+		i++;
+	}
+
+	(*nchn0) = i;
 
 	if (fclose (fp) != 0)
 		fprintf (stderr, "Error closing\n");

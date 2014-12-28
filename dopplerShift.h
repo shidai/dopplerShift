@@ -23,6 +23,6 @@ int read_wts ( char *name, int subint, double *wts, int nchan );
 double read_psrfreq ( char *name );
 double readDm ( char *name );
 
-int readNchn0 (char *name, int *nchn);
+int readNchn0 (char *name, int *nchn0);
 int readFreqSSB (char *name, double *freqSSB);
 int correctFreqSSB (double *freqSSB, char *name, int subint, int nchan);

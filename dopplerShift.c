@@ -9,7 +9,7 @@
 
 int main (int argc, char *argv[])
 {
-	int i;
+	int i,j;
 
 	//////////////////////////////////////////////////////
 	char fname[128];   // name of freqSSB file
@@ -26,13 +26,6 @@ int main (int argc, char *argv[])
 			strcpy(dname,argv[++i]);
 		}
 	}
-
-	// read freqSSB
-	int nchn0;
-	readNchn0 (fname, &nchn0);
-
-	double freqSSB[nchn0];
-	readFreqSSB (fname, freqSSB);
 
 	// name of different extension of data files
 	char name_data[50]; 
@@ -63,16 +56,35 @@ int main (int argc, char *argv[])
 	//printf ("%d\n", nchn);
 	////////////////////////////////////////////////
 
-	if (nchn == nchn0)
+	// read freqSSB correction
+	int nchn0;
+	readNchn0 (fname, &nchn0);
+
+	double freqSSB[nchn0];
+	double freq[nchn];
+	read_freq (name_data, 1, freq, nchn);
+	readFreqSSB (fname, freqSSB);
+	////////////////////////////////////////////////
+	
+	//double freqSSB[nchn];
+	//double freqC;
+	//readFreqSSB (fname, &freqC);
+
+	if (nchn0 == nchn)
 	{
 		for (i = 1; i <= nsub; i++)
 		{
+			//read_freq (name_data, i, freqSSB, nchn);
+			//for (j = 0; j < nchn; j++)
+			//{
+			//	freqSSB[j] = freqSSB[j]*(freqC);
+			//}
 			correctFreqSSB (freqSSB, name_data, i, nchn);
 		}
 	}
 	else
 	{
-		printf ("nchn != nchn0\n");
+		printf ("nchn0 != nchn\n");
 	}
 
 	return 0;
