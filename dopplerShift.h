@@ -26,3 +26,4 @@ double readDm ( char *name );
 int readNchn0 (char *name, int *nchn0);
 int readFreqSSB (char *name, double *freqSSB);
 int correctFreqSSB (double *freqSSB, char *name, int subint, int nchan);
+int correctCfreq (char *name, double cfreq);

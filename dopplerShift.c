@@ -14,6 +14,7 @@ int main (int argc, char *argv[])
 	//////////////////////////////////////////////////////
 	char fname[128];   // name of freqSSB file
 	char dname[128];   // name of data file
+	double cfreq;  // central frequency at SSB
 
 	for (i=0;i<argc;i++)
 	{
@@ -25,6 +26,10 @@ int main (int argc, char *argv[])
 		{
 			strcpy(dname,argv[++i]);
 		}
+		else if (strcmp(argv[i],"-c")==0)
+		{
+			cfreq = atof(argv[++i]);
+		}
 	}
 
 	// name of different extension of data files
@@ -33,6 +38,7 @@ int main (int argc, char *argv[])
 	strcpy(name_data, dname);
 	strcat(name_data, data);
 
+	correctCfreq(dname,cfreq);
 	// get the data file name
 
 	// name of different extension

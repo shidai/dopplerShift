@@ -882,3 +882,34 @@ int readNchn0 (char *name, int *nchn0)
 
 	return 0;
 }
+
+int correctCfreq (char *name, double cfreq)
+{
+	fitsfile *fptr;       // pointer to the FITS file, defined in fitsio.h 
+	int status;
+	int colnum;
+
+	status = 0;
+
+	if ( fits_open_file(&fptr, name, READWRITE, &status) )          // open the file
+	{
+		printf( "error while openning file\n" );
+	}
+
+	if (fits_movabs_hdu (fptr, 1, NULL, &status))
+	{
+		printf( "error moving hdu\n" );
+	}
+
+	if ( fits_write_key(fptr, TDOUBLE, (char *)"OBSFREQ_SSB", &cfreq, NULL, &status) )
+	{
+		printf( "error while getting the npol number\n" );
+	}
+
+	if ( fits_close_file(fptr, &status) )
+	{
+		printf( " error while closing the file \n" );
+	}
+	
+	return 0;
+}
